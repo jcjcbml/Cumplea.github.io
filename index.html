@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Te Amo ❤️</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: url('https://img.freepik.com/vector-gratis/tema-san-valentin-corazones-cielo-rosa_1308-38030.jpg?semt=ais_hybrid&w=740') no-repeat center center;
+      background-size: cover;
+      background-attachment: fixed;
+      font-family: 'Arial', sans-serif;
+      overflow: hidden;
+    }
+
+    .center-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      text-align: center;
+    }
+
+    .message {
+      background: rgba(255, 255, 255, 0.85);
+      padding: 30px;
+      border-radius: 20px;
+      font-size: 34px;
+      color: #d63384;
+      font-weight: bold;
+      animation: bounce 1.5s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    #bubbles-text, #photos {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .text-bubble {
+      position: absolute;
+      font-size: 18px;
+      font-family: 'Cursive', sans-serif;
+      color: #d63384;
+      background-color: rgba(255, 255, 255, 0.7);
+      padding: 10px 20px;
+      border-radius: 25px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      animation: floatText 8s ease-in-out forwards;
+      white-space: nowrap;
+    }
+
+    @keyframes floatText {
+      0% { opacity: 0; transform: scale(0.5) translateY(0px); }
+      50% { opacity: 1; transform: scale(1.2) translateY(-50px); }
+      100% { opacity: 0; transform: scale(1) translateY(-100px); }
+    }
+
+    /* Botón de música */
+    #musica-btn {
+      font-size: 35px;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.8);
+      border: 2px solid #d63384;
+      border-radius: 50px;
+      padding: 12px 24px;
+      color: #d63384;
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Fotos emergentes */
+    .foto {
+      position: absolute;
+      width: 200px;
+      height: auto;
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      opacity: 0;
+      animation: aparecer 8s ease-in-out forwards;
+      z-index: 2;
+    }
+
+    @keyframes aparecer {
+      0% { opacity: 0; transform: scale(0.8); }
+      25% { opacity: 1; transform: scale(1); }
+      75% { opacity: 1; }
+      100% { opacity: 0; transform: scale(0.8); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="center-container">
+    <div class="message">Te Amo Mucho ❤️</div>
+  </div>
+
+  <!-- Botón de música -->
+  <button id="musica-btn" onclick="toggleMusica()">🎵</button>
+  <audio id="audio" src="musica.mp3" preload="auto"></audio>
+
+  <!-- Contenedores para efectos -->
+  <div id="bubbles-text"></div>
+  <div id="photos"></div>
+
+  <script>
+    const messages = [
+      "Eres mi todo 💕", "Gracias por existir ✨",
+      "Te pienso cada segundo 💭", "Mi corazón es tuyo 💘",
+      "Contigo, todo es mejor 🌈", "Eres mi felicidad 🥰"
+    ];
+
+    function createTextBubble() {
+      const bubble = document.createElement("div");
+      bubble.className = "text-bubble";
+      bubble.innerText = messages[Math.floor(Math.random() * messages.length)];
+
+      const left = Math.random() * 80 + 10;
+      const top = Math.random() * 80 + 10;
+      bubble.style.left = left + "vw";
+      bubble.style.top = top + "vh";
+
+      document.getElementById("bubbles-text").appendChild(bubble);
+      setTimeout(() => bubble.remove(), 8000);
+    }
+
+    setInterval(createTextBubble, 1000); // cada 1s
+
+    // Música
+    function toggleMusica() {
+      const audio = document.getElementById("audio");
+      const btn = document.getElementById("musica-btn");
+
+      if (audio.paused) {
+        audio.play().then(() => {
+          btn.innerText = "🔇";
+        }).catch(err => console.log("No se pudo reproducir:", err));
+      } else {
+        audio.pause();
+        btn.innerText = "🎵";
+      }
+    }
+
+    // Fotos
+    const fotos = ["foto1.jpg", "foto2.jpg", "foto3.jpg"]; // usa tus imágenes locales
+    function mostrarFoto() {
+      const img = document.createElement("img");
+      img.src = fotos[Math.floor(Math.random() * fotos.length)];
+      img.className = "foto";
+
+      const left = Math.random() * 80 + 10;
+      const top = Math.random() * 60 + 10;
+      img.style.left = left + "vw";
+      img.style.top = top + "vh";
+
+      document.getElementById("photos").appendChild(img);
+      setTimeout(() => img.remove(), 8000);
+    }
+
+    setInterval(() => {
+      setTimeout(mostrarFoto, 4000); // aparece a los 4s
+    }, 10000); // cada 10s muestra una
+  </script>
+
+</body>
+</html>
+
